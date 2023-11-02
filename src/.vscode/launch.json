@@ -14,7 +14,9 @@
                 "FLASK_DEBUG": "1",
                 "FLASK_ENV": "development",
                 "FLASK_RUN_HOST": "localhost",
-                "FLASK_RUN_PORT": "5173"
+                "FLASK_RUN_PORT": "5173", 
+                "POKE_API": "https://pokeapi.co/api/v2/",
+                "WEATHER_API": "https://api.open-meteo.com/v1/"
             },
             "args": [
                 "run",

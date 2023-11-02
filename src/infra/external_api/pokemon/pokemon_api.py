@@ -9,8 +9,8 @@ from infra.external_api.pokemon.model.type_pokemon import TypePokemon
 logger = get_logger(__name__)
 
 class PokemonAPI(BaseAPI):
-    def __init__(self):
-        super().__init__("https://pokeapi.co/api/v2")
+    def __init__(self, url):
+        super().__init__(url)
         self._lock = object()
 
     # Method to get type of pokemon

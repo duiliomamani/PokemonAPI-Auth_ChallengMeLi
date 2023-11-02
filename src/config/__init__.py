@@ -1,8 +1,8 @@
-from .base_config import BaseConfig
+from .prod_config import ProdConfig
 from .dev_config import DevConfig
 
 configurations = {
-    'production': DevConfig,
-    'development': DevConfig,
-    'default': BaseConfig
+    "production": ProdConfig,
+    "development": DevConfig,
+    "default": DevConfig,
 }

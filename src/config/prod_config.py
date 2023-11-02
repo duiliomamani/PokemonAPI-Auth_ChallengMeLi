@@ -4,5 +4,5 @@ from config.base_config import BaseConfig
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-class DevConfig(BaseConfig):
-    DEBUG = True
+class ProdConfig(BaseConfig):
+    DEBUG = False

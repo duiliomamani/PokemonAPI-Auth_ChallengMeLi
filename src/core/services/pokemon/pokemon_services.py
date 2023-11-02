@@ -1,21 +1,28 @@
 import random
+
+from injector import inject
 from infra.external_api.pokemon.pokemon_api import PokemonAPI
 from infra.external_api.weatherforecast.weatherforecast_api import WeatherForecastAPI
 from core.domain.weatherforecast_types import get_weather_type
 from extensions.logger import get_logger
 
-api = PokemonAPI()
-api_weahter = WeatherForecastAPI()
 logger = get_logger(__name__)
 
 
 class PokemonServices:
-    @classmethod
+    api_poke: PokemonAPI
+    api_weather: WeatherForecastAPI
+    
+    @inject
+    def __init__(self, _api_poke: PokemonAPI, _api_weather: WeatherForecastAPI):
+        self.api_poke = _api_poke
+        self.api_weather = _api_weather
+
     # Method get pokemons by name
     async def get_pokemon(self, name: str):
         try:
             logger.info(f"Init {__name__}")
-            pokemon = await api.get_pokemon(name)
+            pokemon = await self.api_poke.get_pokemon(name)
             return pokemon
         except Exception as e:
             logger.error(f"Error {__name__}")
@@ -23,11 +30,10 @@ class PokemonServices:
         finally:
             logger.info(f"End {__name__}")
 
-    @classmethod
     # Method get pokemons by type
     async def get_pokemon_by_types(self, type_name: str):
         try:
-            type = await api.get_type(type_name)
+            type = await self.api_poke.get_type(type_name)
             
             return type.pokemons
         except Exception as e:
@@ -36,7 +42,6 @@ class PokemonServices:
         finally:
             logger.info(f"End {__name__}")
 
-    @classmethod
     # Method get random pokemons by type
     async def get_random_pokemon_by_type(self, type_name: str):
         try:
@@ -53,8 +58,6 @@ class PokemonServices:
         finally:
             logger.info(f"End {__name__}")
 
-    @classmethod
-    
     # Method get multiple pokemon named by maximum length and by type name
     async def get_max_length_name_pokemons(self, type_name: str):
         try:
@@ -75,13 +78,12 @@ class PokemonServices:
         finally:
             logger.info(f"End {__name__}")
 
-    @classmethod
     # Method get pokemon by weatherforecast actual and by characters filter
     async def get_pokemon_by_filter_with_weather(
         self, filter_characters, latitude, longitude
     ):
         try:
-            current_weather = await api_weahter.get_actual_temperature_by_location(
+            current_weather = await self.api_weather.get_actual_temperature_by_location(
                 latitude, longitude
             )
 
@@ -107,20 +109,19 @@ class PokemonServices:
         finally:
             logger.info(f"End {__name__}")
 
-    @classmethod
     async def get_all_pokemons(self):
         try:
             limit = 100
             offset = 0
 
-            paged = await api.get_paged_pokemon(offset=offset, limit=limit)
+            paged = await self.api_poke.get_paged_pokemon(offset=offset, limit=limit)
             pokemons = []
 
             while paged.next is not None:
                 pokemons = paged.results + pokemons
                 limit += 100
                 offset += 100
-                paged = await api.get_paged_pokemon(offset=offset, limit=limit)
+                paged = await self.api_poke.get_paged_pokemon(offset=offset, limit=limit)
 
             return pokemons
         except Exception as e:

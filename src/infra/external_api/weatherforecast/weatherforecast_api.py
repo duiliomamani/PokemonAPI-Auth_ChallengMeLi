@@ -1,3 +1,4 @@
+from injector import inject
 from extensions.logger import get_logger
 from infra.external_api.base.base_api import BaseAPI, MethodType
 from infra.external_api.weatherforecast.model.weatherforecast import WeatherForecast
@@ -5,8 +6,8 @@ from infra.external_api.weatherforecast.model.weatherforecast import WeatherFore
 logger = get_logger(__name__)
 
 class WeatherForecastAPI(BaseAPI):
-    def __init__(self):
-        super().__init__("https://api.open-meteo.com/v1")
+    def __init__(self, url):
+        super().__init__(url)
         self._lock = object()
 
     # Method to get current temperature by location

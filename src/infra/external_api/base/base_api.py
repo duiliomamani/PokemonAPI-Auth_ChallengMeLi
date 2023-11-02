@@ -97,7 +97,7 @@ class BaseAPI:
                 )
 
                 log = (
-                    f"ApiBase | {url} |{type_method} | {status_code} | {string_result}"
+                    f"ApiBase | {url} |{type_method} | {status_code}"
                 )
                 logger.info(log)
             else:
@@ -107,5 +107,5 @@ class BaseAPI:
         except Exception as e:
             string_result = response_http.text
             log = f"ApiBase | {url} | {type_method} | {status_code} | {string_result}"
-            logger.info(log)
+            logger.error(log)
             raise e
