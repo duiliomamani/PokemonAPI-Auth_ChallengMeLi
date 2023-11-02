@@ -18,7 +18,7 @@ def create_app():
     )
 
     api.add_namespace(pokemon_ns, "/pokemon")
-
+    
     register_routes(app)
     register_exception_handler(app)
 
