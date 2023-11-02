@@ -2,8 +2,6 @@ from flask import Blueprint
 from flask_restx import Api
 from extensions.logger import get_logger
 
-from api.interactor.dtos._base.tresponse_dto import TResponse
-from api.controllers._base._base_controlles import jsonify_custom
 from api.controllers.pokemon.pokemon_controller import ns as pokemon_ns
 
 api_pk = Blueprint("apichallenge", __name__, url_prefix="/api")

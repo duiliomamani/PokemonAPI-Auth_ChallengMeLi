@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_restx import Api
 from extensions.routes import register_routes
 from extensions.exceptions import register_exception_handler
 

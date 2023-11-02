@@ -1,17 +1,29 @@
-import asyncio
 from functools import wraps
-from flask import request, abort
-from core.services.auth.auth_services import AuthServices
+from flask import make_response, request
+from api.interactor.dtos._base.tresponse_dto import TResponse
+from api.controllers._base._base_controlles import jsonify_custom
 
-def require_appkey(view_function):
-    @wraps(view_function)
-    # the new, post-decoration function. Note *args and **kwargs here.
-    def decorated_function(*args, **kwargs):
-        header =request.headers.environ.get('HTTP_X_API_KEY')
-        #Validate ToDo API-KEY
-        path =request.url_rule.rule
-        method =request.method
-        is_authorized= asyncio.run(AuthServices.is_authorized(api_key=header, permission=path, method=method))
-        if is_authorized:
-            return view_function(*args, **kwargs)
-    return decorated_function
+from core.services.auth.auth_services import AuthServices
+from extensions.logger import get_logger
+from infra.exceptions.global_exceptions import BaseException
+
+logger = get_logger(__name__)
+
+def require_appkey(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        try:
+            header = request.headers.environ.get("HTTP_X_API_KEY")
+            is_authenticed = AuthServices.is_authenticed(api_key=header)
+            if is_authenticed[0]:
+                path = request.url_rule.rule
+                method = request.method
+                is_authorized = AuthServices.is_authorized(
+                    client=is_authenticed[1], method=method, permission=path
+                )
+                if is_authorized:
+                    return f(*args, **kwargs)
+        except BaseException as e:
+            return make_response(jsonify_custom( TResponse(False, e.description, e.errors or [])), e.code)
+
+    return wrapper
