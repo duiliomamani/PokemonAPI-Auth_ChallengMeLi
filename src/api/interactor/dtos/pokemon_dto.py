@@ -1,5 +1,4 @@
-from typing import List
-from flask_restx import Model, Namespace, fields
+from flask_restx import  Namespace, fields
 from api.interactor.dtos._base.tresponse_dto import tresponse_model
 
 pokemon_ns = Namespace("Pokemon_Ns", description="Pokemon Endpoints")

@@ -1,6 +1,7 @@
 import asyncio
 from flask_restx import Resource, reqparse
 from api.controllers._base._base_controlles import jsonify_custom
+from api.controllers.auth import require_appkey
 from api.interactor.dtos._base.tresponse_dto import TResponse
 from api.interactor.dtos.pokemon_dto import pokemon_ns as ns
 from api.interactor.dtos.pokemon_dto import pokemon_model_response, response
@@ -17,6 +18,7 @@ class Pokemon(Resource):
     @ns.response(200, "Success", pokemon_model_response)
     @ns.response(400, "Bad Request", response)
     @ns.response(500, "Internal Server Error", response)
+    @require_appkey
     def get(self, name: str):
         data = asyncio.run(PokemonServices.get_pokemon(name))
 
@@ -35,6 +37,7 @@ class PokemonRandomType(Resource):
     @ns.response(200, "Success", pokemon_model_response)
     @ns.response(400, "Bad Request", response)
     @ns.response(500, "Internal Server Error", response)
+    @require_appkey
     def get(self, type_name: str):
         response = asyncio.run(PokemonServices.get_random_pokemon_by_type(type_name))
         return jsonify_custom(response)
@@ -50,6 +53,7 @@ class PokemonRandomType(Resource):
     @ns.response(200, "Success", pokemon_model_response)
     @ns.response(400, "Bad Request", response)
     @ns.response(500, "Internal Server Error", response)
+    @require_appkey
     def get(self, type_name: str):
         response = asyncio.run(PokemonServices.get_max_length_name_pokemons(type_name))
 
@@ -73,8 +77,10 @@ class PokemonRandomType(Resource):
     @ns.response(200, "Success", pokemon_model_response)
     @ns.response(400, "Bad Request", response)
     @ns.response(500, "Internal Server Error", response)
+    @require_appkey
     def get(self):
         args = parser.parse_args()
 
         response = asyncio.run(PokemonServices.get_pokemon_by_filter_with_weather(args["filter"], args["latitude"], args["longitude"]))
+        
         return jsonify_custom(response)

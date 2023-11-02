@@ -1,22 +1,25 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
+from flask_restx import Api
 from extensions.logger import get_logger
 
 from api.interactor.dtos._base.tresponse_dto import TResponse
 from api.controllers._base._base_controlles import jsonify_custom
-from infra.exceptions.global_exceptions import BaseException
+from api.controllers.pokemon.pokemon_controller import ns as pokemon_ns
 
-api_bp = Blueprint("_api_challenge", __name__, url_prefix="/api")
+api_pk = Blueprint("apichallenge", __name__, url_prefix="/api")
 
 logger = get_logger(__name__)
 
+authorizations = {"apikey": {"type": "apiKey", "in": "header", "name": "X-API-KEY"}}
 
-# Decorador para manejar excepciones personalizadas
-@api_bp.errorhandler(BaseException)
-def handle_custom_exception(e: BaseException):
-    """Make JSON Error Response instead of Web Page"""
+api = Api(
+    api_pk,
+    doc="/docs",
+    title="Challenge MeLI - PokeWeather API",
+    version="1.0",
+    description="MercadoLibre Challenge: Weather for Pokémons",
+    authorizations=authorizations,
+    security="apikey",
+)
 
-    rsp = TResponse(False, e.description, e.errors or [])
-
-    logger.error(f"{e.description}: {rsp['message']}")
-    logger.error(f"{e.erros}: {rsp['errors']}")
-    return jsonify_custom(rsp), e.code
+api.add_namespace(pokemon_ns, path="/pokemon")

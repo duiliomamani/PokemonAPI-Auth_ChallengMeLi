@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+
 class BaseException(Exception):
     """Custom Error Exception"""
 
@@ -7,7 +8,7 @@ class BaseException(Exception):
         self,
         code: Optional[int],
         description: Optional[str],
-        errors: Optional[List[dict]]
+        errors: Optional[List[dict]],
     ) -> None:
         super().__init__()
         self.code = code if code is not None else 400
@@ -20,23 +21,32 @@ class BaseException(Exception):
 
 
 class BusinessExceptionError(BaseException):
-    def __init__(self, errors: Optional[List[dict]]) -> None:
+    def __init__(self, errors: Optional[List[dict]] = None) -> None:
         super().__init__(
             code=400, description="One or more errors have occurred.", errors=errors
         )
 
 
 class ValidationExceptionError(BaseException):
-    def __init__(self, errors: Optional[List[dict]]) -> None:
+    def __init__(self, errors: Optional[List[dict]] = None) -> None:
         super().__init__(
             code=400, description="One or more errors have occurred.", errors=errors
         )
 
 
-class InternalExceptionError(BaseException):
-    def __init__(self, errors: Optional[List[dict]]) -> None:
+class UnauthorizedExceptionError(BaseException):
+    def __init__(self, errors: Optional[List[dict]] = None) -> None:
         super().__init__(
-            code=500,
-            description="We were unable to process your request. We are unable to perform the requested operation at this time.",
+            code=401,
+            description="Not authenticated to access the URL requested.",
+            errors=errors,
+        )
+
+
+class ForbiddenExceptionError(BaseException):
+    def __init__(self, errors: Optional[List[dict]] = None) -> None:
+        super().__init__(
+            code=403,
+            description="Not authorized to access the URL requested.",
             errors=errors,
         )
