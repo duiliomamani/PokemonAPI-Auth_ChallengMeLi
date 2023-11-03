@@ -36,6 +36,14 @@ Asigna estas variables de entorno en el momento de levantar el contenedor Docker
 - **FLASK_ENV**: Configura el ambiente de Flask, con `production` para producción y `development` para desarrollo.
 - **FLASK_RUN_PORT**: Especifica el puerto en el que se ejecutará Flask.
 
+## Ejemplos de API Keys
+### Cliente MeLi IAM (Con todos los permisos)
+api_key="NzNjMmEwY2QtMGE1YS00NTJhLTk5MTEtNjAwNGJlYWQ3Nzlk"
+
+### Cliente Company IAM (Sin permisos)
+api_key="OGNmOGIzNWYtNjZhNS00NjE4LTk0ZWItODk3MDc5ZDY3ZmZl"
+
+
 ---
 
 _Challenge MeLi IAM_
