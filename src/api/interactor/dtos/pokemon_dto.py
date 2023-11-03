@@ -1,7 +1,7 @@
 from flask_restx import  Namespace, fields
 from api.interactor.dtos._base.tresponse_dto import tresponse_model
 
-pokemon_ns = Namespace("Pokemon_Ns", description="Pokemon Endpoints")
+pokemon_ns = Namespace("Pokemon", description="Pokemon Endpoints")
 
 response = pokemon_ns.model("Response", model=tresponse_model)
 

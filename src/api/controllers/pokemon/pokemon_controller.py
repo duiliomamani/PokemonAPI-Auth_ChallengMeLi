@@ -14,6 +14,11 @@ from core.services.pokemon.pokemon_services import PokemonServices
     doc={"description": "Get Pokemon by name"},
 )
 @ns.doc(params={"name": "A name of pokemon"})
+@ns.response(200, "Success", pokemon_model_response)
+@ns.response(400, "Bad Request", response)
+@ns.response(401, "Unauthorized", response)
+@ns.response(403, "Forbidden", response)
+@ns.response(500, "Internal Server Error", response)
 class Pokemon(Resource):
     @inject
     def __init__(self, svc: PokemonServices, **kwargs):
@@ -22,9 +27,6 @@ class Pokemon(Resource):
         super().__init__(**kwargs)
 
     @auth
-    @ns.response(200, "Success", pokemon_model_response)
-    @ns.response(400, "Bad Request", response)
-    @ns.response(500, "Internal Server Error", response)
     def get(self, name: str):
         data = asyncio.run(self.svc.get_pokemon(name))
 
@@ -39,6 +41,11 @@ class Pokemon(Resource):
     doc={"description": "Get a pokemon random by type name"},
 )
 @ns.doc(params={"type_name": "A type name of pokemon"})
+@ns.response(200, "Success", pokemon_model_response)
+@ns.response(400, "Bad Request", response)
+@ns.response(401, "Unauthorized", response)
+@ns.response(403, "Forbidden", response)
+@ns.response(500, "Internal Server Error", response)
 class PokemonRandomType(Resource):
     @inject
     def __init__(self, svc: PokemonServices, **kwargs):
@@ -48,8 +55,6 @@ class PokemonRandomType(Resource):
 
     @auth
     @ns.response(200, "Success", pokemon_model_response)
-    @ns.response(400, "Bad Request", response)
-    @ns.response(500, "Internal Server Error", response)
     def get(self, type_name: str):
         response = asyncio.run(self.svc.get_random_pokemon_by_type(type_name))
         return jsonify_custom(response)
@@ -63,6 +68,11 @@ class PokemonRandomType(Resource):
     },
 )
 @ns.doc(params={"type_name": "A type name of pokemon"})
+@ns.response(200, "Success", pokemon_model_response)
+@ns.response(400, "Bad Request", response)
+@ns.response(401, "Unauthorized", response)
+@ns.response(403, "Forbidden", response)
+@ns.response(500, "Internal Server Error", response)
 class PokemonRandomType(Resource):
     @inject
     def __init__(self, svc: PokemonServices, **kwargs):
@@ -71,9 +81,6 @@ class PokemonRandomType(Resource):
         super().__init__(**kwargs)
 
     @auth
-    @ns.response(200, "Success", pokemon_model_response)
-    @ns.response(400, "Bad Request", response)
-    @ns.response(500, "Internal Server Error", response)
     def get(self, type_name: str):
         response = asyncio.run(self.svc.get_max_length_name_pokemons(type_name))
 
@@ -102,6 +109,12 @@ parser.add_argument(
 @ns.doc(params={"filter": "A name of pokemon"})
 @ns.doc(params={"latitude": "Current location latitude geocode"})
 @ns.doc(params={"longitude": "Current location longitude geocode"})
+
+@ns.response(200, "Success", pokemon_model_response)
+@ns.response(400, "Bad Request", response)
+@ns.response(401, "Unauthorized", response)
+@ns.response(403, "Forbidden", response)
+@ns.response(500, "Internal Server Error", response)
 class PokemonRandomType(Resource):
     @inject
     def __init__(
@@ -112,9 +125,6 @@ class PokemonRandomType(Resource):
         super().__init__(**kwargs)
 
     @auth
-    @ns.response(200, "Success", pokemon_model_response)
-    @ns.response(400, "Bad Request", response)
-    @ns.response(500, "Internal Server Error", response)
     def get(self):
         args = parser.parse_args()
 
