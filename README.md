@@ -6,12 +6,12 @@ Este proyecto representa un desafío realizado para MercadoLibre en el área de 
 ## Pasos para Dockerizar el Proyecto
 1. Construir la imagen Docker:
     ```bash
-    docker build -t flask-poke-api -f build/Dockerfile .
+    docker build -t challenge-meli-poke-api -f build/Dockerfile .
     ```
 
 2. Levantar el contenedor Docker:
     ```bash
-    docker run -d -p 5000:5000 -e POKE_API=$("poke_api.endpoint") -e WEATHER_API=$("weather_api.endpoint") flask-poke-api
+    docker run -d -p 5000:5000 -e POKE_API=$("https://pokeapi.co/api/v2/") -e WEATHER_API=$("https://api.open-meteo.com/v1/") -e FLASK_ENV=$("development") -e FLASK_RUN_PORT=$("5000") challenge-meli-poke-api
     ```
 
 ## Librerías Utilizadas
@@ -33,6 +33,8 @@ Para levantar el proyecto de manera local, crea los siguientes archivos:
 Asigna estas variables de entorno en el momento de levantar el contenedor Docker:
 - **POKE_API**: Asigna la URL del servicio Poke API.
 - **WEATHER_API**: Asigna la URL del servicio Weather API.
+- **FLASK_ENV**: Configura el ambiente de Flask, con `production` para producción y `development` para desarrollo.
+- **FLASK_RUN_PORT**: Especifica el puerto en el que se ejecutará Flask.
 
 ---
 
